@@ -1,5 +1,5 @@
 // מטמון בסיסי: נכסי האתר נשמרים כדי שהאפליקציה תיפתח גם בחיבור חלש.
-const CACHE = 'anigram-v2';
+const CACHE = 'anigram-v3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', (event) => {
