@@ -32,6 +32,9 @@ html, body {
   overflow-x: hidden;
 }
 
+/* צבע בסיס מתחת לגרדיאנט: בלי פס בהיר בגלילה ארוכה בנייד */
+html { background-color: var(--night); }
+
 a { color: var(--glow); text-underline-offset: 4px; }
 a:hover { color: var(--amber-hi); }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--amber-hi); outline-offset: 3px; }
@@ -89,53 +92,7 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--amber-hi); outl
 }
 .nav-links a:hover { color: var(--droplet); }
 
-.logo-wrap { position: relative; }
-
-.logo-btn {
-  font: inherit;
-  font-size: 13px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--glass-edge);
-  background: linear-gradient(135deg, rgba(232, 247, 250, 0.1), rgba(232, 247, 250, 0.02));
-  color: var(--droplet);
-  cursor: pointer;
-  white-space: nowrap;
-  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
-}
-.logo-btn:hover {
-  border-color: var(--amber);
-  box-shadow: 0 0 0 4px rgba(200, 148, 62, 0.15);
-}
-
-.logo-menu {
-  position: absolute;
-  inset-inline-end: 0;
-  top: calc(100% + 10px);
-  display: flex;
-  flex-direction: column;
-  min-width: 220px;
-  padding: 6px;
-  border-radius: 14px;
-  background: rgba(16, 48, 58, 0.92);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--glass-edge);
-  box-shadow: var(--shadow-deep);
-  animation: rise 0.35s var(--ease);
-}
-
-.logo-menu button {
-  font: inherit;
-  padding: 10px 14px;
-  border-radius: 10px;
-  background: none;
-  border: 0;
-  text-align: start;
-  cursor: pointer;
-  color: var(--droplet);
-  transition: background 0.25s var(--ease);
-}
-.logo-menu button:hover { background: rgba(143, 216, 230, 0.12); }
+ai-menu { flex: 0 0 auto; }
 
 /* ---------- תוכן ---------- */
 main {
@@ -336,7 +293,7 @@ main {
 
 @media (max-width: 600px) {
   .topbar { flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
-  .nav-links { order: 3; width: 100%; }
+  .nav-links { gap: 12px; }
   .page h1 { font-size: 30px; }
   .hero { margin: -40px -14px 0; padding: 56px 18px 40px; min-height: 68vh; }
   .hero h1 { font-size: 38px; }
