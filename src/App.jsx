@@ -61,7 +61,7 @@ function TopBar() {
 
 function Home() {
   return (
-    <section className="page">
+    <section className="page hero">
       <h1>אניגרם</h1>
       <p className="lead">
         מסע קצר אל תשעת הטיפוסים של שיטת האניאגרם. האניאגרם הוא מודל לשיקוף ולפיתוח עצמי, לא כלי אבחון.

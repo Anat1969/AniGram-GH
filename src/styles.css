@@ -1,174 +1,345 @@
+/* שפה עיצובית: נגזרה מתמונת טיפות המים על זרעי השרביט.
+   רקע לילה טורקיז-כחול, זוהר ציאן, טיפות כסופות וגבעולים ענברים. */
 :root {
-  --ink: #1f2a37;
-  --ink-soft: #4b5563;
-  --paper: #f7f6f3;
-  --card: #ffffff;
-  --line: #d9d6cf;
-  --accent: #1e3a5f;
-  --shadow: 0 1px 2px rgba(31, 42, 55, 0.08), 0 8px 24px rgba(31, 42, 55, 0.08);
+  --night: #0b1f26;
+  --deep: #10303a;
+  --teal: #1d4f5e;
+  --glow: #8fd8e6;
+  --droplet: #e8f7fa;
+  --mist: #9fc4cc;
+  --amber: #c8943e;
+  --amber-hi: #e3b96b;
+  --glass: rgba(232, 247, 250, 0.06);
+  --glass-edge: rgba(143, 216, 230, 0.2);
+  --shadow-deep: 0 18px 48px rgba(3, 12, 16, 0.55);
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 * { box-sizing: border-box; }
 
 html, body {
   margin: 0;
-  background: var(--paper);
-  color: var(--ink);
+  min-height: 100%;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(143, 216, 230, 0.16), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(200, 148, 62, 0.12), transparent 60%),
+    linear-gradient(180deg, var(--deep) 0%, var(--night) 100%);
+  background-attachment: fixed;
+  color: var(--droplet);
   font-family: 'Heebo', system-ui, sans-serif;
   font-weight: 400;
-  line-height: 1.7;
+  line-height: 1.75;
   overflow-x: hidden;
 }
 
-a { color: var(--accent); }
+a { color: var(--glow); text-underline-offset: 4px; }
+a:hover { color: var(--amber-hi); }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--amber-hi); outline-offset: 3px; }
 
+/* ---------- סרגל עליון ---------- */
 .topbar {
   position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 12px 20px;
-  background: var(--card);
-  border-bottom: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  gap: 18px;
+  padding: 12px 22px;
+  background: rgba(11, 31, 38, 0.72);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid var(--glass-edge);
+  box-shadow: 0 10px 30px rgba(3, 12, 16, 0.4);
   min-width: 0;
 }
 
 .app-name {
-  font-weight: 600;
-  font-size: 18px;
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 0.02em;
   text-decoration: none;
-  color: var(--ink);
+  color: var(--droplet);
+  position: relative;
 }
+
+.app-name::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -4px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber-hi), transparent);
+  transform: scaleX(0);
+  transition: transform 0.5s var(--ease);
+}
+.app-name:hover::after { transform: scaleX(1); }
 
 .nav-links {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   flex: 1;
   min-width: 0;
   flex-wrap: wrap;
 }
 
-.nav-links a { text-decoration: none; color: var(--ink-soft); }
-.nav-links a:hover { color: var(--accent); }
+.nav-links a {
+  text-decoration: none;
+  color: var(--mist);
+  transition: color 0.3s var(--ease);
+}
+.nav-links a:hover { color: var(--droplet); }
 
 .logo-wrap { position: relative; }
 
 .logo-btn {
   font: inherit;
   font-size: 13px;
-  padding: 8px 12px;
-  border: 1px solid var(--ink);
-  background: transparent;
-  color: var(--ink);
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-edge);
+  background: linear-gradient(135deg, rgba(232, 247, 250, 0.1), rgba(232, 247, 250, 0.02));
+  color: var(--droplet);
   cursor: pointer;
   white-space: nowrap;
+  transition: border-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.logo-btn:hover {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 4px rgba(200, 148, 62, 0.15);
 }
 
 .logo-menu {
   position: absolute;
   inset-inline-end: 0;
-  top: calc(100% + 6px);
+  top: calc(100% + 10px);
   display: flex;
   flex-direction: column;
-  min-width: 200px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 14px;
+  background: rgba(16, 48, 58, 0.92);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow-deep);
+  animation: rise 0.35s var(--ease);
 }
 
 .logo-menu button {
   font: inherit;
   padding: 10px 14px;
+  border-radius: 10px;
   background: none;
   border: 0;
   text-align: start;
   cursor: pointer;
-  color: var(--ink);
+  color: var(--droplet);
+  transition: background 0.25s var(--ease);
 }
+.logo-menu button:hover { background: rgba(143, 216, 230, 0.12); }
 
-.logo-menu button:hover { background: var(--paper); }
-
+/* ---------- תוכן ---------- */
 main {
-  max-width: 880px;
+  max-width: 920px;
   margin: 0 auto;
-  padding: 32px 20px 64px;
+  padding: 40px 22px 72px;
   min-width: 0;
 }
+
+.page { animation: rise 0.6s var(--ease) both; }
 
 .page h1 {
   font-weight: 300;
-  font-size: 38px;
+  font-size: 40px;
   line-height: 1.2;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
+  letter-spacing: 0.01em;
 }
 
-.page .en { font-size: 0.55em; color: var(--ink-soft); font-weight: 300; }
-.lead { font-size: 19px; color: var(--ink-soft); max-width: 60ch; }
-.note { font-size: 14px; color: var(--ink-soft); border-inline-start: 3px solid var(--line); padding-inline-start: 12px; }
-.tag { font-size: 14px; color: var(--ink-soft); }
-.crumb { font-size: 14px; color: var(--ink-soft); }
+.page .en { font-size: 0.55em; color: var(--mist); font-weight: 300; }
+.lead { font-size: 19px; color: var(--mist); max-width: 60ch; }
+.tag { font-size: 14px; color: var(--amber-hi); }
+.crumb { font-size: 14px; color: var(--mist); }
+
+.note {
+  font-size: 14px;
+  color: var(--mist);
+  border-inline-start: 2px solid var(--amber);
+  padding-inline-start: 14px;
+}
+
+/* ---------- עמוד הבית: טיפה על רקע הזרע ---------- */
+.hero {
+  position: relative;
+  margin: -40px -22px 0;
+  min-height: 74vh;
+  padding: 72px 28px 56px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  background: var(--night) url('./hero.png') center / cover no-repeat;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(11, 31, 38, 0.15) 0%, rgba(11, 31, 38, 0.55) 55%, var(--night) 100%);
+}
+
+.hero::after {
+  /* שכבת זוהר שמחקה את ההשתקפות בטיפה */
+  content: '';
+  position: absolute;
+  inset-inline-start: -10%;
+  top: 14%;
+  width: 60%;
+  height: 40%;
+  background: radial-gradient(closest-side, rgba(143, 216, 230, 0.22), transparent);
+  filter: blur(18px);
+  animation: drift 14s var(--ease) infinite alternate;
+  pointer-events: none;
+}
+
+.hero > * { position: relative; z-index: 1; }
+.hero h1 { font-size: 52px; }
+.hero .lead { color: var(--droplet); opacity: 0.85; }
 
 .cta {
   display: inline-block;
-  margin: 16px 0 24px;
-  padding: 12px 22px;
-  background: var(--accent);
-  color: #fff;
+  align-self: flex-start;
+  margin: 18px 0 8px;
+  padding: 13px 26px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--amber-hi), var(--amber));
+  color: var(--night);
+  font-weight: 600;
   text-decoration: none;
+  box-shadow: 0 10px 30px rgba(200, 148, 62, 0.32);
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+}
+.cta:hover {
+  color: var(--night);
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(200, 148, 62, 0.42);
 }
 
+/* ---------- כרטיסי טיפוסים: זכוכית עם קצה זוהר ---------- */
 .type-grid {
   list-style: none;
   padding: 0;
-  margin: 24px 0 0;
+  margin: 28px 0 0;
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
 }
 
 .type-card {
+  position: relative;
   display: grid;
-  gap: 4px;
-  padding: 18px;
-  background: var(--card);
-  box-shadow: var(--shadow);
+  gap: 6px;
+  padding: 20px 20px 22px;
+  border-radius: 18px;
+  background: linear-gradient(160deg, rgba(232, 247, 250, 0.09), rgba(232, 247, 250, 0.02));
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow-deep);
   text-decoration: none;
-  color: var(--ink);
+  color: var(--droplet);
   min-width: 0;
+  overflow: hidden;
+  transition: transform 0.45s var(--ease), border-color 0.45s var(--ease);
 }
 
-.type-card:hover { outline: 1px solid var(--accent); }
-.type-num { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); }
-.type-name { font-size: 20px; font-weight: 600; }
-.type-en { font-size: 13px; color: var(--ink-soft); }
+.type-card::before {
+  /* טיפה זוהרת בפינה */
+  content: '';
+  position: absolute;
+  inset-inline-end: -28px;
+  top: -28px;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #ffffff 0%, rgba(143, 216, 230, 0.55) 35%, transparent 70%);
+  opacity: 0.5;
+  transition: opacity 0.45s var(--ease), transform 0.45s var(--ease);
+}
 
+.type-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--amber);
+  color: var(--droplet);
+}
+.type-card:hover::before { opacity: 0.9; transform: scale(1.15); }
+
+.type-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--amber-hi);
+}
+.type-name { font-size: 21px; font-weight: 600; }
+.type-en { font-size: 13px; color: var(--mist); }
+
+/* ---------- פרטי טיפוס ---------- */
 .facts {
   display: grid;
   grid-template-columns: max-content 1fr;
-  gap: 10px 20px;
-  margin: 24px 0;
-  padding: 20px;
-  background: var(--card);
-  box-shadow: var(--shadow);
+  gap: 14px 24px;
+  margin: 28px 0;
+  padding: 24px;
+  border-radius: 20px;
+  background: linear-gradient(160deg, rgba(232, 247, 250, 0.08), rgba(232, 247, 250, 0.02));
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-edge);
+  box-shadow: var(--shadow-deep);
 }
 
-.facts dt { font-weight: 600; }
-.facts dd { margin: 0; }
+.facts dt { font-weight: 600; color: var(--glow); }
+.facts dd { margin: 0; color: var(--droplet); }
 
 .pager {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  margin-top: 32px;
+  margin-top: 36px;
   flex-wrap: wrap;
 }
 
+.pager a {
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-edge);
+  text-decoration: none;
+  color: var(--droplet);
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.pager a:hover { border-color: var(--amber); color: var(--amber-hi); }
+
+/* ---------- תנועה ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes drift {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(8%, 6%, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
 @media (max-width: 600px) {
-  .topbar { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
+  .topbar { flex-wrap: wrap; gap: 8px; padding: 10px 14px; }
   .nav-links { order: 3; width: 100%; }
   .page h1 { font-size: 30px; }
+  .hero { margin: -40px -14px 0; padding: 56px 18px 40px; min-height: 68vh; }
+  .hero h1 { font-size: 38px; }
   .facts { grid-template-columns: 1fr; }
+  main { padding: 28px 14px 56px; }
 }
