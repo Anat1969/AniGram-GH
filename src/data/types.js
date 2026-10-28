@@ -34,7 +34,7 @@ export const TYPES = [
   {
     n: 3,
     name: 'הביצועיסט',
-    en: 'The Achiever',
+    en: 'The Performer',
     center: 'heart',
     motivation: 'רצון להצליח, להשיג יעדים ולהיראות בהצלחה.',
     worry: 'חשש מכישלון ומחוסר ערך בעיני הסביבה.',
@@ -44,7 +44,7 @@ export const TYPES = [
   {
     n: 4,
     name: 'הדרמטי',
-    en: 'The Individualist',
+    en: 'The Dramatic',
     center: 'heart',
     motivation: 'חיפוש זהות אותנטית ומשמעות אישית.',
     worry: 'חשש מלהיות רגיל, לא מובן או חסר משמעות.',
@@ -54,7 +54,7 @@ export const TYPES = [
   {
     n: 5,
     name: 'המדען',
-    en: 'The Investigator',
+    en: 'The Scientist',
     center: 'head',
     motivation: 'רצון להבין, לצבור ידע ולשמור על מרחב פנימי.',
     worry: 'חשש מהצפה, מחוסר יכולת או מתלות באחרים.',
@@ -64,7 +64,7 @@ export const TYPES = [
   {
     n: 6,
     name: 'הספקן',
-    en: 'The Loyalist',
+    en: 'The Skeptic',
     center: 'head',
     motivation: 'רצון לביטחון, לתמיכה ולהיערכות לסיכונים.',
     worry: 'חשש מחוסר ביטחון, מבגידה או מהיעדר תמיכה.',
@@ -74,7 +74,7 @@ export const TYPES = [
   {
     n: 7,
     name: 'הנהנתן',
-    en: 'The Enthusiast',
+    en: 'The Hedonist',
     center: 'head',
     motivation: 'רצון לחוויות חדשות, אפשרויות והתלהבות.',
     worry: 'חשש מכאב, משעמום ומהגבלה.',
@@ -84,7 +84,7 @@ export const TYPES = [
   {
     n: 8,
     name: 'הבוס',
-    en: 'The Challenger',
+    en: 'The Boss',
     center: 'gut',
     motivation: 'רצון לשליטה, עוצמה והגנה על עצמו ועל האחרים.',
     worry: 'חשש משליטה של אחרים בו ומחולשה.',

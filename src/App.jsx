@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { TYPES, CENTERS, SOURCE_URL, getType } from './data/types.js';
-import { usePwaInstall } from './pwa.js';
 
 // ניתוב בהאש: עובד בלי הגדרות שרת, כך שהאתר נפתח ישירות מכל כתובת.
 function useHash() {
@@ -14,21 +13,11 @@ function useHash() {
   return path;
 }
 
+// כפתור הלוגו לפי תקן A&I: רכיב <ai-menu> המשותף (נטען ב-index.html).
+// העתקת קישור, שיחת הפיתוח והתקנת האפליקציה נמצאים בתוכו, לא בסרגל.
+const DEV_CHAT = 'https://claude.ai/code/session_018qeN17yb8NLTNUH4d69kQ4';
+
 function TopBar() {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [copied, setCopied] = useState(false);
-  const { canInstall, install } = usePwaInstall();
-
-  const copyLink = async () => {
-    try {
-      await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch {
-      setCopied(false);
-    }
-  };
-
   return (
     <header className="topbar">
       <a className="app-name" href="#/">אניגרם</a>
@@ -36,25 +25,7 @@ function TopBar() {
         <a href="#/types">הטיפוסים</a>
         <a href="#/about">על השיטה</a>
       </nav>
-      <div className="logo-wrap">
-        <button
-          className="logo-btn"
-          aria-expanded={menuOpen}
-          onClick={() => setMenuOpen((v) => !v)}
-        >
-          אד' ענת שטיבלמן A&amp;I
-        </button>
-        {menuOpen && (
-          <div className="logo-menu" role="menu">
-            <button role="menuitem" onClick={copyLink}>
-              {copied ? 'הקישור הועתק' : 'העתקת קישור'}
-            </button>
-            {canInstall && (
-              <button role="menuitem" onClick={install}>התקנת האפליקציה</button>
-            )}
-          </div>
-        )}
-      </div>
+      <ai-menu chat={DEV_CHAT}></ai-menu>
     </header>
   );
 }
