@@ -10,9 +10,44 @@ export const CENTERS = {
   head: 'מרכז הראש',
 };
 
+// מידע מבני: ידע כללי על האניאגרם, לא אומת מול המקור (ראו docs/05).
+// צבע לכל מרכז נושא משמעות בכל הדיאגרמות.
+export const CENTER_META = {
+  gut: { name: 'מרכז הבטן', short: 'בטן', color: '#e3b96b', members: [8, 9, 1], theme: 'פעולה, גבולות ותחושת שליטה' },
+  heart: { name: 'מרכז הלב', short: 'לב', color: '#ef9f95', members: [2, 3, 4], theme: 'רגש, דימוי וקשר עם אחרים' },
+  head: { name: 'מרכז הראש', short: 'ראש', color: '#8fd8e6', members: [5, 6, 7], theme: 'חשיבה, ביטחון ותכנון' },
+};
+
+// קווים פנימיים: כיוון הצמיחה וכיוון הלחץ, לפי הקריאה המקובלת בספרות הכללית.
+export const GROWTH = { 1: 7, 2: 4, 3: 6, 4: 1, 5: 8, 6: 9, 7: 5, 8: 2, 9: 3 };
+export const STRESS = { 1: 4, 2: 8, 3: 9, 4: 2, 5: 7, 6: 3, 7: 1, 8: 5, 9: 6 };
+
+export const wingsOf = (n) => [n === 1 ? 9 : n - 1, n === 9 ? 1 : n + 1];
+
+// יחס מבני בין שני טיפוסים. מתאר את הדיאגרמה בלבד, לא התאמה בין אנשים.
+export function relation(a, b) {
+  const A = getType(a);
+  const B = getType(b);
+  const out = [];
+  if (a === b) return [{ kind: 'same', text: 'אותו טיפוס.' }];
+  out.push(
+    A.center === B.center
+      ? { kind: 'center', text: `שניהם ב${CENTER_META[A.center].name}.` }
+      : { kind: 'center-diff', text: `מרכזים שונים: ${CENTER_META[A.center].name} ו${CENTER_META[B.center].name}.` },
+  );
+  if (wingsOf(a).includes(b)) out.push({ kind: 'wing', text: 'שכנים על המעגל: כל אחד מהם יכול לשמש כנף לשני.' });
+  if (GROWTH[a] === b) out.push({ kind: 'growth', text: `${B.name} נמצא בכיוון הצמיחה של ${A.name}.` });
+  if (STRESS[a] === b) out.push({ kind: 'stress', text: `${B.name} נמצא בכיוון הלחץ של ${A.name}.` });
+  if (GROWTH[b] === a) out.push({ kind: 'growth', text: `${A.name} נמצא בכיוון הצמיחה של ${B.name}.` });
+  if (STRESS[b] === a) out.push({ kind: 'stress', text: `${A.name} נמצא בכיוון הלחץ של ${B.name}.` });
+  if (out.length === 1) out.push({ kind: 'none', text: 'אין ביניהם קו או שכנות ישירים בדיאגרמה.' });
+  return out;
+}
+
 export const TYPES = [
   {
     n: 1,
+    focus: 'מה נכון ומה דורש תיקון',
     name: 'המחוקק',
     en: 'The Legislator',
     center: 'gut',
@@ -23,6 +58,7 @@ export const TYPES = [
   },
   {
     n: 2,
+    focus: 'מה אחרים צריכים',
     name: 'המסייע',
     en: 'The Helper',
     center: 'heart',
@@ -33,6 +69,7 @@ export const TYPES = [
   },
   {
     n: 3,
+    focus: 'מה יוביל להצלחה',
     name: 'הביצועיסט',
     en: 'The Performer',
     center: 'heart',
@@ -43,6 +80,7 @@ export const TYPES = [
   },
   {
     n: 4,
+    focus: 'מה חסר ומה ייחודי',
     name: 'הדרמטי',
     en: 'The Dramatic',
     center: 'heart',
@@ -53,6 +91,7 @@ export const TYPES = [
   },
   {
     n: 5,
+    focus: 'מה אפשר להבין ולצפות',
     name: 'המדען',
     en: 'The Scientist',
     center: 'head',
@@ -63,6 +102,7 @@ export const TYPES = [
   },
   {
     n: 6,
+    focus: 'מה עלול להשתבש',
     name: 'הספקן',
     en: 'The Skeptic',
     center: 'head',
@@ -73,6 +113,7 @@ export const TYPES = [
   },
   {
     n: 7,
+    focus: 'מה עוד אפשרי ומעניין',
     name: 'הנהנתן',
     en: 'The Hedonist',
     center: 'head',
@@ -83,6 +124,7 @@ export const TYPES = [
   },
   {
     n: 8,
+    focus: 'מי מחזיק בכוח',
     name: 'הבוס',
     en: 'The Boss',
     center: 'gut',
@@ -93,6 +135,7 @@ export const TYPES = [
   },
   {
     n: 9,
+    focus: 'איך לשמור על שקט והרמוניה',
     name: 'משכין שלום',
     en: 'The Peacemaker',
     center: 'gut',

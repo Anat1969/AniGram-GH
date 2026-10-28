@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react';
-import { TYPES, CENTERS, SOURCE_URL, getType } from './data/types.js';
+import { AnimatePresence, MotionConfig, motion } from 'framer-motion';
+import Ambient from './components/Ambient.jsx';
+import Home from './pages/Home.jsx';
+import MapPage from './pages/MapPage.jsx';
+import TypesIndex from './pages/TypesIndex.jsx';
+import TypeDetail from './pages/TypeDetail.jsx';
+import Compare from './pages/Compare.jsx';
+import About from './pages/About.jsx';
 
 // ניתוב בהאש: עובד בלי הגדרות שרת, כך שהאתר נפתח ישירות מכל כתובת.
 function useHash() {
@@ -14,102 +21,34 @@ function useHash() {
 }
 
 // כפתור הלוגו לפי תקן A&I: רכיב <ai-menu> המשותף (נטען ב-index.html).
-// העתקת קישור, שיחת הפיתוח והתקנת האפליקציה נמצאים בתוכו, לא בסרגל.
+// העתקת קישור, שיחת הפיתוח, פרויקט המחקר והתקנת האפליקציה נמצאים בתוכו, לא בסרגל.
 const DEV_CHAT = 'https://claude.ai/code/session_018qeN17yb8NLTNUH4d69kQ4';
+const RESEARCH = 'https://claude.ai/chat/7b7dd5b5-a6cb-4a76-8d3f-fc92b91288e4';
 
-function TopBar() {
+const NAV = [
+  ['/types', 'הטיפוסים'],
+  ['/map', 'מפה'],
+  ['/compare', 'השוואה'],
+  ['/about', 'על השיטה'],
+];
+
+function TopBar({ path }) {
   return (
     <header className="topbar">
       <a className="app-name" href="#/">אניגרם</a>
       <nav className="nav-links" aria-label="ניווט ראשי">
-        <a href="#/types">הטיפוסים</a>
-        <a href="#/about">על השיטה</a>
-      </nav>
-      <ai-menu chat={DEV_CHAT}></ai-menu>
-    </header>
-  );
-}
-
-function Home() {
-  return (
-    <section className="page hero">
-      <h1>אניגרם</h1>
-      <p className="lead">
-        מסע קצר אל תשעת הטיפוסים של שיטת האניאגרם. האניאגרם הוא מודל לשיקוף ולפיתוח עצמי, לא כלי אבחון.
-      </p>
-      <a className="cta" href="#/types">לתשעת הטיפוסים</a>
-      <p className="note">
-        התיאורים כאן מסכמים ידע כללי על השיטה, במילים שלנו. לשיטה של המרכז הישראלי לאניאגרם ראו{' '}
-        <a href={SOURCE_URL} target="_blank" rel="noreferrer">9types.co.il</a>.
-      </p>
-    </section>
-  );
-}
-
-function TypesIndex() {
-  return (
-    <section className="page">
-      <h1>תשעת הטיפוסים</h1>
-      <ul className="type-grid">
-        {TYPES.map((t) => (
-          <li key={t.n}>
-            <a className="type-card" href={`#/type/${t.n}`}>
-              <span className="type-num">{t.n}</span>
-              <span className="type-name">{t.name}</span>
-              <span className="type-en">{t.en}</span>
+        {NAV.map(([to, label]) => {
+          const on = path === to || path.startsWith(`${to}/`) || (to === '/types' && path.startsWith('/type/'));
+          return (
+            <a key={to} href={`#${to}`} className={on ? 'on' : ''} aria-current={on ? 'page' : undefined}>
+              {label}
+              {on && <motion.span layoutId="nav-ink" className="nav-ink" />}
             </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-function TypeDetail({ n }) {
-  const t = getType(n);
-  if (!t) return <NotFound />;
-  const prev = getType(t.n === 1 ? 9 : t.n - 1);
-  const next = getType(t.n === 9 ? 1 : t.n + 1);
-  return (
-    <section className="page">
-      <p className="crumb"><a href="#/types">תשעת הטיפוסים</a> / {t.n}</p>
-      <h1>{t.name} <span className="en">({t.en})</span></h1>
-      <p className="tag">טיפוס {t.n} · {CENTERS[t.center]} · ידע כללי, ממתין לאימות מול המקור</p>
-      <dl className="facts">
-        <dt>מה מניע</dt><dd>{t.motivation}</dd>
-        <dt>מה מטריד</dt><dd>{t.worry}</dd>
-        <dt>כוחות</dt><dd>{t.strengths}</dd>
-        <dt>שים לב ל</dt><dd>{t.watch}</dd>
-      </dl>
-      <p className="note">
-        האניאגרם משמש לשיקוף, לא לקביעת טיפוס. אם אתה מזהה את עצמך בתיאור, זה נתון לבדיקה ולא מסקנה.
-      </p>
-      <nav className="pager" aria-label="מעבר בין טיפוסים">
-        <a href={`#/type/${prev.n}`}>{prev.name}</a>
-        <a href={`#/type/${next.n}`}>{next.name}</a>
+          );
+        })}
       </nav>
-    </section>
-  );
-}
-
-function About() {
-  return (
-    <section className="page">
-      <h1>על השיטה</h1>
-      <p>
-        האניאגרם הוא מודל של תשעה טיפוסי אישיות, המתארים דפוסי מוטיבציה ותשומת לב. השיטה משמשת בעיקר לשיקוף ולפיתוח עצמי.
-      </p>
-      <p>
-        חשוב לדעת: האניאגרם אינו כלי פסיכומטרי מאומת בספרות המחקר המרכזית, ושאלונים מבוססי הצהרה עצמית מוגבלים באמינותם.
-        האתר של המרכז הישראלי מציג את שאלון האניאגרם שלו כ"כלי עזר בלבד".
-      </p>
-      <p>
-        המסך הזה אינו מאבחן ואינו קובע טיפוס לאדם. לא לקשר טיפוס להפרעה נפשית או למצב רפואי.
-      </p>
-      <p className="note">
-        מקור: <a href={SOURCE_URL} target="_blank" rel="noreferrer">9types.co.il</a>
-      </p>
-    </section>
+      <ai-menu chat={DEV_CHAT} research={RESEARCH}></ai-menu>
+    </header>
   );
 }
 
@@ -122,19 +61,42 @@ function NotFound() {
   );
 }
 
+function route(path) {
+  const [, a, b, c] = path.split('/');
+  if (!a) return ['home', <Home />];
+  if (a === 'types' && !b) return ['types', <TypesIndex />];
+  if (a === 'type' && b) return ['type', <TypeDetail n={Number(b)} />];
+  if (a === 'map') return ['map', <MapPage selected={b ? Number(b) : null} />];
+  if (a === 'compare') return ['compare', <Compare a={Number(b) || 1} b={Number(c) || 2} />];
+  if (a === 'about') return ['about', <About />];
+  return ['404', <NotFound />];
+}
+
 export default function App() {
   const path = useHash();
-  let view;
-  if (path === '/' || path === '') view = <Home />;
-  else if (path === '/types') view = <TypesIndex />;
-  else if (path === '/about') view = <About />;
-  else if (path.startsWith('/type/')) view = <TypeDetail n={path.split('/')[2]} />;
-  else view = <NotFound />;
+  const [key, view] = route(path);
+
+  // גלילה לראש העמוד במעבר בין עמודים, לא בתוך אותו עמוד.
+  useEffect(() => {
+    window.scrollTo({ top: 0 });
+  }, [key]);
 
   return (
-    <>
-      <TopBar />
-      <main>{view}</main>
-    </>
+    <MotionConfig reducedMotion="user">
+      <Ambient />
+      <TopBar path={path} />
+      <AnimatePresence mode="wait">
+        <motion.main
+          key={key}
+          className={`main-${key}`}
+          initial={{ opacity: 0, y: 14, filter: 'blur(6px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, y: -10, filter: 'blur(4px)' }}
+          transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+        >
+          {view}
+        </motion.main>
+      </AnimatePresence>
+    </MotionConfig>
   );
 }
